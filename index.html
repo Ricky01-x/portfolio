@@ -1,0 +1,2796 @@
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>量化金融作品集 - 技能樹</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* 語言切換按鈕 */
+        .language-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(64, 224, 208, 0.2);
+            border: 1px solid rgba(64, 224, 208, 0.5);
+            border-radius: 25px;
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .language-switcher:hover {
+            background: rgba(64, 224, 208, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(64, 224, 208, 0.3);
+        }
+        
+        .language-icon {
+            font-size: 1.2rem;
+        }
+        
+        .language-text {
+            font-weight: 600;
+            color: #40E0D0;
+        }
+        
+        /* 粒子背景 */
+        #particles-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        /* 主標題區域 */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            background: radial-gradient(circle at center, rgba(64, 224, 208, 0.1) 0%, transparent 70%);
+        }
+        
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 300;
+            letter-spacing: 0.2rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #40E0D0, #FF8C00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 20px rgba(64, 224, 208, 0.5)); }
+            to { filter: drop-shadow(0 0 30px rgba(255, 140, 0, 0.5)); }
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            color: #888;
+            margin-bottom: 3rem;
+        }
+        
+        /* 技能樹導航 */
+        .skill-tree-nav {
+            position: sticky;
+            top: 0;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(64, 224, 208, 0.3);
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+        
+        .skill-branches {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .branch-btn {
+            background: transparent;
+            border: 2px solid transparent;
+            padding: 0.8rem 2rem;
+            color: #888;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            font-size: 1rem;
+            letter-spacing: 0.1rem;
+        }
+        
+        .branch-btn:hover {
+            color: #40E0D0;
+            border-color: rgba(64, 224, 208, 0.5);
+        }
+        
+        .branch-btn.active {
+            color: #40E0D0;
+            border-color: #40E0D0;
+            background: rgba(64, 224, 208, 0.1);
+        }
+        
+        .branch-btn::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #40E0D0;
+            transition: width 0.3s ease;
+        }
+        
+        .branch-btn.active::after {
+            width: 100%;
+        }
+        
+        /* 內容區域 */
+        .content-section {
+            min-height: 100vh;
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: none;
+        }
+        
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            color: #40E0D0;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .highlight-box {
+            background: rgba(30, 30, 30, 0.8);
+            border: 1px solid rgba(64, 224, 208, 0.3);
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        
+        /* 時間軸樣式 */
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, #40E0D0, #FF8C00);
+            transform: translateX(-50%);
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding: 2rem;
+            width: 45%;
+            margin-bottom: 3rem;
+            background: rgba(30, 30, 30, 0.8);
+            border: 1px solid rgba(64, 224, 208, 0.3);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+        
+        .timeline-item:nth-child(even) {
+            left: 55%;
+        }
+        
+        .timeline-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(64, 224, 208, 0.3);
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 2rem;
+            width: 20px;
+            height: 20px;
+            background: #40E0D0;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(64, 224, 208, 0.8);
+        }
+        
+        .timeline-item:nth-child(odd)::before {
+            right: -60px;
+        }
+        
+        .timeline-item:nth-child(even)::before {
+            left: -60px;
+        }
+        
+        /* WorldQuant Alpha 研究區塊 */
+        .alpha-system {
+            background: linear-gradient(135deg, rgba(30, 30, 30, 0.9), rgba(40, 40, 40, 0.9));
+            border: 1px solid rgba(64, 224, 208, 0.3);
+            border-radius: 15px;
+            padding: 3rem;
+            margin: 3rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .alpha-system::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(64, 224, 208, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .system-diagram {
+            position: relative;
+            z-index: 1;
+            margin: 2rem 0;
+            padding: 2rem;
+            background: rgba(20, 20, 20, 0.8);
+            border-radius: 10px;
+        }
+        
+        .flow-chart {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .flow-node {
+            background: rgba(40, 40, 40, 0.9);
+            border: 1px solid rgba(64, 224, 208, 0.5);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .flow-node:hover {
+            transform: scale(1.05);
+            border-color: #40E0D0;
+            box-shadow: 0 5px 20px rgba(64, 224, 208, 0.5);
+        }
+        
+        .flow-node h4 {
+            color: #40E0D0;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* 成果展示 */
+        .results-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .result-card {
+            background: rgba(30, 30, 30, 0.9);
+            border: 1px solid rgba(255, 140, 0, 0.3);
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .result-card:hover {
+            transform: translateY(-5px);
+            border-color: #FF8C00;
+            box-shadow: 0 10px 30px rgba(255, 140, 0, 0.3);
+        }
+        
+        .metric {
+            font-size: 3rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #FF8C00, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* 遊戲開發區塊 */
+        .game-section {
+            background: linear-gradient(135deg, rgba(40, 30, 50, 0.9), rgba(30, 30, 40, 0.9));
+            border: 1px solid rgba(255, 140, 0, 0.3);
+            border-radius: 15px;
+            padding: 3rem;
+            margin: 3rem 0;
+        }
+        
+        .game-feature {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            margin: 3rem 0;
+            padding: 2rem;
+            background: rgba(20, 20, 20, 0.5);
+            border-radius: 10px;
+        }
+        
+        .game-feature:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+        
+        .feature-content {
+            flex: 1;
+        }
+        
+        .feature-visual {
+            flex: 1;
+            height: 300px;
+            background: linear-gradient(135deg, rgba(64, 224, 208, 0.2), rgba(255, 140, 0, 0.2));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #666;
+            border: 1px solid rgba(64, 224, 208, 0.3);
+            overflow: hidden;
+        }
+        
+        /* 軟體開發支線專用樣式 */
+        .project-card {
+            background: rgba(20, 20, 20, 0.8);
+            border: 1px solid rgba(64, 224, 208, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(64, 224, 208, 0.2);
+            padding-bottom: 1rem;
+        }
+
+        .project-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .tag-frontend { background: rgba(255, 140, 0, 0.8); }
+        .tag-backend { background: rgba(147, 112, 219, 0.8); }
+        .tag-database { background: rgba(78, 205, 196, 0.8); }
+        .tag-insurance { background: rgba(255, 215, 0, 0.8); color: #333; }
+
+        .tech-architecture {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: rgba(10, 10, 10, 0.5);
+            border-radius: 10px;
+            border-left: 4px solid #40E0D0;
+        }
+
+        .architecture-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .arch-item {
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .arch-item h5 {
+            color: #40E0D0;
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+        }
+
+        .arch-item ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .arch-item li {
+            padding: 0.3rem 0;
+            padding-left: 1rem;
+            position: relative;
+        }
+
+        .arch-item li::before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: #40E0D0;
+        }
+
+        .demo-image {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .demo-placeholder {
+            aspect-ratio: 16/9;
+            background: rgba(30, 30, 30, 0.8);
+            border: 2px dashed rgba(64, 224, 208, 0.4);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .demo-placeholder:hover {
+            border-color: rgba(64, 224, 208, 0.8);
+            background: rgba(40, 40, 40, 0.8);
+        }
+
+        .value-points {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .value-item {
+            padding: 1rem;
+            background: rgba(64, 224, 208, 0.1);
+            border-radius: 8px;
+            border-left: 3px solid #40E0D0;
+        }
+
+        .value-item h5 {
+            color: #40E0D0;
+            margin-bottom: 0.5rem;
+        }
+
+        .demo-link {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background: linear-gradient(135deg, #40E0D0, #FF8C00);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .demo-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(64, 224, 208, 0.3);
+        }
+        
+        /* 技能樹視覺化 */
+        .skill-tree-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            height: 600px;
+            margin: 0 auto;
+        }
+        
+        .skill-tree-svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .skill-leaves {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .skill-leaf {
+            position: absolute;
+            background: rgba(64, 224, 208, 0.9);
+            color: white;
+            padding: 0.8rem 1.2rem;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            transform: translate(-50%, -50%);
+            animation: leafFloat 4s ease-in-out infinite;
+            white-space: nowrap;
+        }
+        
+        .skill-leaf[data-category="tech"] {
+            background: rgba(255, 140, 0, 0.9);
+        }
+        
+        .skill-leaf[data-category="data"] {
+            background: rgba(147, 112, 219, 0.9);
+        }
+        
+        .skill-leaf[data-category="game"] {
+            background: rgba(255, 215, 0, 0.9);
+        }
+        
+        .skill-leaf[data-category="soft"] {
+            background: rgba(82, 105, 209, 0.9);
+        }
+        
+        .skill-leaf:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+        }
+        
+        @keyframes leafFloat {
+            0%, 100% {
+                transform: translate(-50%, -50%) rotate(-2deg);
+            }
+            25% {
+                transform: translate(-50%, -50%) rotate(2deg);
+            }
+            50% {
+                transform: translate(-50%, -50%) rotate(-1deg);
+            }
+            75% {
+                transform: translate(-50%, -50%) rotate(1deg);
+            }
+        }
+        
+        .skill-leaf:nth-child(even) {
+            animation-delay: 0.5s;
+        }
+        
+        .skill-leaf:nth-child(3n) {
+            animation-delay: 1s;
+        }
+        
+        .skill-leaf:nth-child(4n) {
+            animation-delay: 1.5s;
+        }
+        
+        .skill-leaf:nth-child(5n) {
+            animation-delay: 2s;
+        }
+        
+        .skill-legend {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .legend-item:hover {
+            background: rgba(64, 224, 208, 0.1);
+            border-color: rgba(64, 224, 208, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .legend-item.active {
+            background: rgba(64, 224, 208, 0.2);
+            border-color: #40E0D0;
+            box-shadow: 0 4px 15px rgba(64, 224, 208, 0.3);
+        }
+        
+        .skill-leaf.highlighted {
+            filter: url(#glow);
+            animation: pulse 2s ease-in-out infinite;
+            transform: translate(-50%, -50%) scale(1.1);
+            z-index: 100;
+        }
+        
+        .skill-leaf.dimmed {
+            opacity: 0.4;
+            transform: translate(-50%, -50%) scale(0.95);
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 4px rgba(64, 224, 208, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 8px rgba(255, 140, 0, 0.3);
+            }
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+        
+        /* 技能標籤 */
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .skill-tag {
+            background: rgba(64, 224, 208, 0.2);
+            border: 1px solid rgba(64, 224, 208, 0.5);
+            border-radius: 20px;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .skill-tag:hover {
+            background: rgba(64, 224, 208, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        /* 詳情按鈕 */
+        .detail-btn {
+            background: rgba(64, 224, 208, 0.2);
+            border: 1px solid rgba(64, 224, 208, 0.5);
+            color: #40E0D0;
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .detail-btn:hover {
+            background: rgba(64, 224, 208, 0.3);
+            transform: translateX(5px);
+        }
+        
+        /* 模態框 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            background: rgba(30, 30, 30, 0.95);
+            margin: 5% auto;
+            padding: 3rem;
+            border: 1px solid rgba(64, 224, 208, 0.3);
+            border-radius: 15px;
+            width: 80%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .close {
+            color: #40E0D0;
+            float: right;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            position: absolute;
+            right: 1.5rem;
+            top: 1rem;
+        }
+        
+        .close:hover {
+            color: #FF8C00;
+        }
+        
+        /* 回到頂部按鈕 */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #40E0D0, #FF8C00);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.8);
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+        }
+        
+        .back-to-top:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 35px rgba(64, 224, 208, 0.4);
+        }
+        
+        .back-to-top:active {
+            transform: scale(0.95);
+        }
+        
+        .back-to-top::before {
+            content: '↑';
+            font-weight: bold;
+            font-size: 28px;
+        }
+        
+        /* 為按鈕添加呼吸燈效果 */
+        @keyframes breathe {
+            0%, 100% {
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            }
+            50% {
+                box-shadow: 0 8px 25px rgba(64, 224, 208, 0.5);
+            }
+        }
+        
+        .back-to-top.visible {
+            animation: breathe 3s ease-in-out infinite;
+        }
+        
+        /* 手機版適配 */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .skill-branches {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .timeline-item {
+                width: 90%;
+                left: 5% !important;
+            }
+            
+            .timeline-item::before {
+                left: -30px !important;
+            }
+            
+            .game-feature {
+                flex-direction: column !important;
+            }
+            
+            .language-switcher {
+                top: 10px;
+                right: 10px;
+                padding: 0.6rem 1rem;
+            }
+            
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+            
+            .back-to-top::before {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="particles-bg"></canvas>
+    
+    <!-- 語言切換按鈕 -->
+    <div class="language-switcher" onclick="toggleLanguage()">
+        <span class="language-icon">🌐</span>
+        <span class="language-text" data-lang-key="language-btn">中文</span>
+    </div>
+    
+    <!-- 主標題區域 -->
+    <section class="hero">
+        <h1 data-lang-key="main-title">量化金融技能樹</h1>
+        <p class="subtitle" data-lang-key="subtitle">持續學習 · 精益求精 · 跨域創新</p>
+        <div class="skill-tags">
+            <span class="skill-tag" data-lang-key="tag-quant">量化交易</span>
+            <span class="skill-tag" data-lang-key="tag-ml">機器學習</span>
+            <span class="skill-tag" data-lang-key="tag-cloud">雲端架構</span>
+            <span class="skill-tag" data-lang-key="tag-game">遊戲開發</span>
+            <span class="skill-tag" data-lang-key="tag-fintech">金融科技</span>
+        </div>
+    </section>
+    
+    <!-- 技能樹導航 -->
+    <nav class="skill-tree-nav">
+        <div class="skill-branches">
+            <button class="branch-btn active" onclick="showBranch('quant')" data-lang-key="nav-quant">量化金融主線</button>
+            <button class="branch-btn" onclick="showBranch('game')" data-lang-key="nav-game">遊戲開發支線</button>
+            <button class="branch-btn" onclick="showBranch('software')" data-lang-key="nav-software">軟體開發支線</button>
+            <button class="branch-btn" onclick="showBranch('skills')" data-lang-key="nav-skills">技能樹總覽</button>
+        </div>
+    </nav>
+    
+    <!-- 量化金融主線 -->
+    <section id="quant-branch" class="content-section active">
+        <h2 class="section-title" data-lang-key="quant-title">量化金融發展歷程</h2>
+        
+        <div class="timeline">
+            <!-- 初學階段 -->
+            <div class="timeline-item">
+                <h3 data-lang-key="timeline-1-title">從Coding小白開始</h3>
+                <p data-lang-key="timeline-1-desc">社會學系統計分析的啟蒙，第一次接觸數據分析的魅力。</p>
+                <button class="detail-btn" onclick="showDetail('stats-beginning')" data-lang-key="detail-btn">查看詳情 →</button>
+                <div class="skill-tags">
+                    <span class="skill-tag">SPSS</span>
+                    <span class="skill-tag" data-lang-key="leaf-stats">統計分析</span>
+                    <span class="skill-tag" data-lang-key="tag-survey">問卷調查</span>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <h3 data-lang-key="timeline-2-title">雙主修金融系，與財務工程的初相識</h3>
+                <p data-lang-key="timeline-2-desc">理論與實務的初次碰撞，完成人生第一個金融實證分析。</p>
+                <button class="detail-btn" onclick="showDetail('capm-project')" data-lang-key="view-capm">查看CAPM分析 →</button>
+                <div class="skill-tags">
+                    <span class="skill-tag">CAPM</span>
+                    <span class="skill-tag">Beta</span>
+                    <span class="skill-tag">Excel</span>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <h3 data-lang-key="timeline-3-title">選擇權定價探索</h3>
+                <p data-lang-key="timeline-3-desc">從黑盒子到透明化，用Excel VBA實作Black-Scholes模型。</p>
+                <button class="detail-btn" onclick="showDetail('options-pricing')" data-lang-key="view-volatility">查看波動率分析 →</button>
+                <div class="skill-tags">
+                    <span class="skill-tag">Black-Scholes</span>
+                    <span class="skill-tag">VBA</span>
+                    <span class="skill-tag" data-lang-key="tag-implied-vol">隱含波動率</span>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <h3 data-lang-key="timeline-4-title">初次挫折與反思</h3>
+                <p data-lang-key="timeline-4-desc">簡單策略慘敗，意識到量化交易需要更系統性的方法。</p>
+                <button class="detail-btn" onclick="showDetail('first-failure')" data-lang-key="view-failure">查看失敗案例 →</button>
+                <div class="skill-tags">
+                    <span class="skill-tag" data-lang-key="tag-mean-reversion">均值回歸</span>
+                    <span class="skill-tag" data-lang-key="tag-momentum">動能策略</span>
+                    <span class="skill-tag" data-lang-key="tag-reflection">反思學習</span>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <h3 data-lang-key="timeline-5-title">統計套利突破</h3>
+                <p data-lang-key="timeline-5-desc">找到適合的研究方向，BNB-DOGE策略年化報酬53%。</p>
+                <button class="detail-btn" onclick="showDetail('pairs-trading')" data-lang-key="view-report">查看完整報告 →</button>
+                <div class="skill-tags">
+                    <span class="skill-tag" data-lang-key="tag-cointegration">共整檢驗</span>
+                    <span class="skill-tag" data-lang-key="leaf-python">Python</span>
+                    <span class="skill-tag" data-lang-key="leaf-api">API應用</span>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <h3 data-lang-key="timeline-6-title">WorldQuant Alpha 1.0</h3>
+                <p data-lang-key="timeline-6-desc">初探Alpha因子，從手動嘗試到自動化搜索的轉變。</p>
+                <button class="detail-btn" onclick="showDetail('alpha-v1')" data-lang-key="view-code">查看程式碼 →</button>
+                <div class="skill-tags">
+                    <span class="skill-tag" data-lang-key="leaf-alpha">Alpha因子</span>
+                    <span class="skill-tag" data-lang-key="leaf-automation">自動化</span>
+                    <span class="skill-tag" data-lang-key="leaf-arbitrage">統計套利</span>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <h3 data-lang-key="timeline-7-title">貪婪演算法優化</h3>
+                <p data-lang-key="timeline-7-desc">解決相關性過高問題，設計智能搜索策略。</p>
+                <button class="detail-btn" onclick="showDetail('greedy-algo')" data-lang-key="view-algo">查看演算法 →</button>
+                <div class="skill-tags">
+                    <span class="skill-tag" data-lang-key="tag-algo-design">演算法設計</span>
+                    <span class="skill-tag" data-lang-key="tag-optimization">優化策略</span>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <h3 data-lang-key="timeline-8-title">老鼠屎清理機制</h3>
+                <p data-lang-key="timeline-8-desc">自創演算法，實現汰弱留強，逐步提升搜索效率。</p>
+                <button class="detail-btn" onclick="showDetail('rat-cleaning')" data-lang-key="view-innovation">查看創新系統 →</button>
+                <div class="skill-tags">
+                    <span class="skill-tag" data-lang-key="leaf-innovation">創新思維</span>
+                    <span class="skill-tag" data-lang-key="tag-system-opt">系統優化</span>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <h3 data-lang-key="timeline-9-title">雲端部署挑戰</h3>
+                <p data-lang-key="timeline-9-desc">2000行代碼遷移上雲，實現24/7自動運行。</p>
+                <button class="detail-btn" onclick="showDetail('cloud-deploy')" data-lang-key="view-arch">查看架構 →</button>
+                <div class="skill-tags">
+                    <span class="skill-tag">GCP</span>
+                    <span class="skill-tag" data-lang-key="leaf-cloud">雲端架構</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- WorldQuant Alpha 2.0 -->
+        <div class="alpha-system">
+            <h2 class="section-title" data-lang-key="alpha-title">WorldQuant Alpha研究 2.0 - 全自動化演進</h2>
+            
+            <div class="highlight-box">
+                <h3 data-lang-key="alpha-concept">核心理念：持續精益求精 · 極致自動化 · 系統化創新</h3>
+                <p data-lang-key="alpha-desc">面對如何持續產出高品質Alpha的挑戰，我設計了一套完整的自動化解決方案，從數據採集到策略優化形成閉環系統。</p>
+            </div>
+            
+            <div class="system-diagram">
+                <h3 data-lang-key="system-flow-title">系統架構流程圖</h3>
+                <div style="text-align: center;">
+                    <img src="image/流程圖.png" alt="WorldQuant Alpha自動化系統架構圖" 
+                        style="max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+                </div>
+            </div>
+            
+            <div class="flow-chart">
+                <div class="flow-node">
+                    <h4 data-lang-key="flow-1-title">智能數據採集</h4>
+                    <p data-lang-key="flow-1-desc">爬蟲自動抓取WorldQuant數據集與操作符，智能過濾保留高實用性數據</p>
+                </div>
+                <div class="flow-node">
+                    <h4 data-lang-key="flow-2-title">GA演算法引擎</h4>
+                    <p data-lang-key="flow-2-desc">遺傳算法自動探索Alpha空間，效率有質的提升</p>
+                </div>
+                <div class="flow-node">
+                    <h4 data-lang-key="flow-3-title">自動化回測</h4>
+                    <p data-lang-key="flow-3-desc">候選Alpha自動進入模擬系統，生成完整的績效報告</p>
+                </div>
+                <div class="flow-node">
+                    <h4 data-lang-key="flow-4-title">智能學習優化</h4>
+                    <p data-lang-key="flow-4-desc">分析報告反饋至GA引擎，持續優化下一代Alpha生成策略</p>
+                </div>
+                <div class="flow-node">
+                    <h4 data-lang-key="flow-5-title">組合優化系統</h4>
+                    <p data-lang-key="flow-5-desc">爬取所有Alpha的5年Daily PnL，只選擇能提升整體組合表現的Alpha</p>
+                </div>
+                <div class="flow-node" style="background: rgba(255, 140, 0, 0.2); border-color: rgba(255, 140, 0, 0.5);">
+                    <h4 data-lang-key="flow-6-title">潛力Alpha培育（未來計畫）</h4>
+                    <p data-lang-key="flow-6-desc">自動分析未達標原因，嘗試優化使其成為可提交的Alpha</p>
+                </div>
+            </div>
+            
+            <h3 data-lang-key="results-title">當前成果展示</h3>
+            <div class="results-showcase">
+                <div class="result-card">
+                    <div class="metric">28</div>
+                    <p data-lang-key="metric-alpha-count">成功開發Alpha數量</p>
+                </div>
+                <div class="result-card">
+                    <div class="metric">2.716</div>
+                    <p data-lang-key="metric-sharpe">投資組合Sharpe Ratio</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="highlight-box" style="margin-top: 3rem; text-align: center;">
+            <h3 data-lang-key="vision-text">在量化金融的道路上，我不只在尋找ALPHA，更是創造價值</h3>
+        </div>
+    </section>
+    
+    <!-- 遊戲開發支線 -->
+    <section id="game-branch" class="content-section">
+        <h2 class="section-title" data-lang-key="game-title">金融教育遊戲開發</h2>
+        
+        <div class="game-section">
+            <div class="highlight-box">
+                <h3 data-lang-key="game-vision-title">專案願景：讓金融學習變得有趣</h3>
+                <p data-lang-key="game-vision-desc">作為社會學系跨域到金融領域的學生，我深刻體會到貨幣銀行學等核心課程的學習痛點。與其死記硬背枯燥的理論，不如透過遊戲化的方式，讓學生在實戰中理解央行政策工具的運用。</p>
+            </div>
+            
+            <h3 data-lang-key="game-main-title">全球央行對戰遊戲</h3>
+            
+            <div class="game-feature">
+                <div class="feature-content">
+                    <h4 data-lang-key="game-feature-title">核心創新點</h4>
+                    <ul style="margin-left: 2rem; line-height: 1.8;">
+                        <li><strong data-lang-key="game-feature-1">跨國對戰系統：擺脫傳統美國視角，體驗全球央行博弈</strong></li>
+                        <li><strong data-lang-key="game-feature-2">實時政策影響：每個決策都會影響其他玩家的經濟環境</strong></li>
+                        <li><strong data-lang-key="game-feature-3">同儕競爭學習：透過對戰激發學習動力與創意思考</strong></li>
+                        <li><strong data-lang-key="game-feature-4">真實模擬體驗：親身體驗央行決策者的思維模式</strong></li>
+                    </ul>
+                </div>
+                <div class="feature-visual" style="height: 300px; width: 1800px;">
+                    <img src="image/game.webp" alt="遊戲主介面展示" 
+                        style="width: 100%; height: 100%; object-fit: contain; border-radius: 10px;">
+                </div>
+            </div>
+            
+            <div style="margin: 3rem 0;">
+                <h4 style="text-align: center; margin-bottom: 2rem; color: #40E0D0; font-size: 1.5rem;" data-lang-key="game-dev-process">開發歷程</h4>
+                <div class="development-process-image" style="
+                    width: 100%; 
+                    height: 300px; 
+                    background: rgba(64, 224, 208, 0.1); 
+                    border: 2px dashed rgba(64, 224, 208, 0.3);
+                    border-radius: 10px; 
+                    display: flex; 
+                    align-items: center; 
+                    justify-content: center;
+                    overflow: hidden;
+                ">
+                    <img src="image/process.png" alt="開發歷程流程圖" 
+                         style="width: 100%; height: 100%; object-fit: contain; border-radius: 8px;"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    
+                    <div style="
+                        display: none;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        color: #666;
+                        font-size: 1.1rem;
+                        text-align: center;
+                        padding: 2rem;
+                    ">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">📊</div>
+                        <div>開發歷程流程圖</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; opacity: 0.7;">
+                            請將您的流程圖放在 image/development-process.png
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="margin: 3rem 0;">
+                <h4 style="text-align: center; margin-bottom: 2rem; color: #40E0D0; font-size: 1.5rem;" data-lang-key="game-tech-arch">核心技術架構圖</h4>
+                <div class="development-process-image" style="
+                    width: 100%; 
+                    height: 300px; 
+                    background: rgba(64, 224, 208, 0.1); 
+                    border: 2px dashed rgba(64, 224, 208, 0.3);
+                    border-radius: 10px; 
+                    display: flex; 
+                    align-items: center; 
+                    justify-content: center;
+                    overflow: hidden;
+                ">
+                    <img src="image/structure.png" alt="架構圖" 
+                         style="width: 100%; height: 100%; object-fit: contain; border-radius: 8px;"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    
+                    <div style="
+                        display: none;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        color: #666;
+                        font-size: 1.1rem;
+                        text-align: center;
+                        padding: 2rem;
+                    ">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">🏗️</div>
+                        <div>架構圖</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; opacity: 0.7;">
+                            請將您的架構圖放在 image/structure.png
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <h3 data-lang-key="game-features">遊戲特色</h3>
+            <div class="results-showcase">
+                <div class="result-card">
+                    <div class="metric" data-lang-key="game-metric-5">5種</div>
+                    <p data-lang-key="game-tools">政策工具</p>
+                </div>
+                <div class="result-card">
+                    <div class="metric" data-lang-key="game-metric-6">6人</div>
+                    <p data-lang-key="game-players">同時在線</p>
+                </div>
+                <div class="result-card">
+                    <div class="metric" data-lang-key="game-cross-nation">跨國</div>
+                    <p data-lang-key="game-cb-game">央行博弈</p>
+                </div>
+                <div class="result-card">
+                    <div class="metric" data-lang-key="game-random">隨機</div>
+                    <p data-lang-key="game-events">突發事件系統</p>
+                </div>
+                <div class="result-card">
+                    <div class="metric" data-lang-key="game-skills">專屬技能</div>
+                    <p data-lang-key="game-nation-skills">國家特色主、被動技能</p>
+                </div>                
+                <div class="result-card">
+                    <div class="metric" data-lang-key="game-reality">真實性</div>
+                    <p data-lang-key="game-econ-logic">參考真實經濟邏輯</p>
+                </div>
+            </div>
+            
+            <div class="highlight-box">
+                <h4 data-lang-key="game-future-title">未來展望</h4>
+                <p data-lang-key="game-future-desc">目前已完成主要遊戲部分的設計，未來會完善遊玩體驗、設計評分系統、擴充更多央行角色與事件系統。並開始嘗試與大學商學院接洽，目標是將這個遊戲賣給大學，我的願景是讓這個遊戲成為未來每位商學院學生必備的學習工具。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 軟體開發支線 -->
+    <section id="software-branch" class="content-section">
+        <h2 class="section-title" data-lang-key="software-title">軟體開發支線</h2>
+        
+        <div class="highlight-box" style="text-align: center; margin-bottom: 3rem;">
+            <h3 data-lang-key="software-vision">從實務痛點出發，用技術解決真實問題</h3>
+            <p style="font-size: 1.1rem; color: #888; margin-top: 1rem;" data-lang-key="software-desc">
+                暑假在南山人壽實習期間，深度體驗保險業務銷售流程，發現現有工具無法滿足客戶與業務員的核心需求
+            </p>
+        </div>
+        
+        <!-- 項目概述 -->
+        <div class="project-card">
+            <div class="project-header">
+                <h3 data-lang-key="project-title">🛡️ 保險理賠計算工具</h3>
+            </div>
+            
+            <div class="project-content">
+                <h4 data-lang-key="project-origin-title">📋 緣起與需求分析</h4>
+                <p data-lang-key="project-origin-desc">
+                    在南山人壽實習期間，我親身觀察到保險銷售過程中的核心痛點：<strong>客戶最關心的是「出事能拿到多少錢」，但現有工具無法直觀回答這個問題</strong>。
+                    當客戶擁有多份保險時，業務員需要手動計算各保險間的理賠關係，過程複雜且容易出錯。
+                </p>
+                
+                <h4 data-lang-key="project-solution-title">💡 解決方案設計</h4>
+                <p data-lang-key="project-solution-desc">
+                    我主動向主管提出開發一套<strong>保險理賠計算工具</strong>的想法，獲得認可後開始著手設計。工具核心功能是讓業務員能快速輸入客戶保單組合，
+                    選擇具體理賠情境（如車禍骨折、肝癌手術等），系統自動計算總理賠金額，並清楚顯示各保險的啟動條件與給付明細。
+                </p>
+                
+                <div class="tech-architecture">
+                    <h4 data-lang-key="tech-arch-title">🏗️ 技術架構</h4>
+                    <div class="architecture-grid">
+                        <div class="arch-item frontend">
+                            <h5 data-lang-key="frontend-title">前端界面</h5>
+                            <ul>
+                                <li data-lang-key="frontend-1">React.js 響應式設計</li>
+                                <li data-lang-key="frontend-2">保單搜尋與輸入功能</li>
+                                <li data-lang-key="frontend-3">情境選擇介面</li>
+                                <li data-lang-key="frontend-4">理賠結果視覺化</li>
+                            </ul>
+                        </div>
+                        <div class="arch-item backend">
+                            <h5 data-lang-key="backend-title">後端邏輯</h5>
+                            <ul>
+                                <li data-lang-key="backend-1">保險商品資料庫</li>
+                                <li data-lang-key="backend-2">理賠事件分類系統</li>
+                                <li data-lang-key="backend-3">多保險邏輯計算引擎</li>
+                                <li data-lang-key="backend-4">條款解析與匹配</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <h4 data-lang-key="demo-title">📊 核心功能展示</h4>
+                <div class="demo-image">
+                    <div class="demo-placeholder">
+                        <img src="image/保險畫面1.png" alt="保單輸入介面截圖" 
+                            style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                    </div>
+                    <div class="demo-placeholder">
+                        <img src="image/保險畫面2.png" alt="保單輸入介面截圖" 
+                            style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                    </div>
+                </div>
+                
+                <h4 data-lang-key="value-title">🎯 項目價值與成果</h4>
+                <div class="value-points">
+                    <div class="value-item">
+                        <h5 data-lang-key="value-1-title">解決客戶痛點</h5>
+                        <p data-lang-key="value-1-desc">直觀回答「能拿到多少錢」的核心問題，提升客戶理解度與信任感</p>
+                    </div>
+                    <div class="value-item">
+                        <h5 data-lang-key="value-2-title">提升業務效率</h5>
+                        <p data-lang-key="value-2-desc">自動化計算流程，減少人工錯誤，新進業務員也能快速上手</p>
+                    </div>
+                    <div class="value-item">
+                        <h5 data-lang-key="value-3-title">技術整合創新</h5>
+                        <p data-lang-key="value-3-desc">結合金融專業知識與程式技能，創造具實用價值的金融科技解決方案</p>
+                    </div>
+                </div>
+                
+                <h4 data-lang-key="future-dev-title">🚀 持續發展</h4>
+                <p data-lang-key="future-dev-desc">
+                    目前正積極與主管接洽，爭取更多保險商品資料與理賠案例，計劃擴充商品資料庫並優化計算邏輯。
+                    <strong>目標是將此工具實際應用於業務銷售流程中，提升整體服務品質</strong>。
+                </p>
+                
+                <div class="project-links">
+                    <a href="https://ricky01-x.github.io/insurance_tool/" target="_blank" class="demo-link" data-lang-key="demo-link-text">
+                        🔗 體驗測試版工具
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 核心技能與未來展望 -->
+    <section id="skills-branch" class="content-section">
+        <h2 class="section-title" data-lang-key="skills-title">核心技能與未來展望</h2>
+        
+        <div class="highlight-box" style="text-align: center; margin-bottom: 3rem;">
+            <h3 data-lang-key="skills-vision">用努力做養分、用汗水來灌溉，願我的技能樹持續成長壯大</h3>
+        </div>
+        
+        <!-- 技能樹視覺化 -->
+        <div class="skill-tree-container">
+            <svg viewBox="0 0 800 600" class="skill-tree-svg">
+                <!-- 主樹幹 - 再次加粗加高 -->
+                <path d="M365 600 L370 520 Q375 480 380 440 Q383 400 385 360 Q387 320 390 280 Q392 240 394 200 Q396 160 398 120 Q400 160 402 200 Q404 240 406 280 Q408 320 410 360 Q413 400 416 440 Q421 480 426 520 L431 600 Z" 
+                      fill="url(#trunkGradient)" stroke="#5D4E37" stroke-width="6"/>
+                
+                <!-- 主要分支 - 從樹幹自然延伸 -->
+                <g class="main-branches">
+                    <!-- 左主分支 - 調整連接點配合新樹幹 -->
+                    <path d="M380 440 Q335 420 285 380 Q265 360 235 330 Q215 300 185 260" 
+                          stroke="url(#branchGradient)" stroke-width="12" fill="none"/>
+                    <path d="M285 380 Q265 350 235 320 Q205 290 165 250" 
+                          stroke="url(#branchGradient)" stroke-width="8" fill="none"/>
+                    
+                    <!-- 右主分支 - 調整連接點配合新樹幹 -->
+                    <path d="M416 440 Q461 420 511 380 Q531 360 561 330 Q581 300 611 260" 
+                          stroke="url(#branchGradient)" stroke-width="12" fill="none"/>
+                    <path d="M511 380 Q531 350 561 320 Q591 290 631 250" 
+                          stroke="url(#branchGradient)" stroke-width="8" fill="none"/>
+                    
+                    <!-- 中央主分支 - 從樹幹頂部連接，更高 -->
+                    <path d="M398 120 Q398 80 398 40 Q398 20 398 10" 
+                          stroke="url(#branchGradient)" stroke-width="10" fill="none"/>
+                    
+                    <!-- 連接分支 - 完全刪除底部小分支，只保留頂部 -->
+                    <!-- 頂部分支連接 -->
+                    <path d="M398 120 L393 125" stroke="url(#branchGradient)" stroke-width="10" fill="none"/>
+                    <path d="M398 120 L403 125" stroke="url(#branchGradient)" stroke-width="10" fill="none"/>
+                </g>
+                
+                <!-- 次級分支 -->
+                <g class="secondary-branches">
+                    <!-- 左側次級分支 -->
+                    <path d="M250 330 Q220 320 180 300" stroke="url(#branchGradient)" stroke-width="4" fill="none"/>
+                    <path d="M250 330 Q230 310 200 280" stroke="url(#branchGradient)" stroke-width="4" fill="none"/>
+                    <path d="M200 260 Q170 250 140 230" stroke="url(#branchGradient)" stroke-width="4" fill="none"/>
+                    <path d="M200 260 Q180 240 150 210" stroke="url(#branchGradient)" stroke-width="4" fill="none"/>
+                    
+                    <!-- 右側次級分支 -->
+                    <path d="M550 330 Q580 320 620 300" stroke="url(#branchGradient)" stroke-width="4" fill="none"/>
+                    <path d="M550 330 Q570 310 600 280" stroke="url(#branchGradient)" stroke-width="4" fill="none"/>
+                    <path d="M600 260 Q630 250 660 230" stroke="url(#branchGradient)" stroke-width="4" fill="none"/>
+                    <path d="M600 260 Q620 240 650 210" stroke="url(#branchGradient)" stroke-width="4" fill="none"/>
+                    
+                    <!-- 頂部次級分支 -->
+                    <path d="M400 200 Q370 180 340 160" stroke="url(#branchGradient)" stroke-width="4" fill="none"/>
+                    <path d="M400 200 Q430 180 460 160" stroke="url(#branchGradient)" stroke-width="4" fill="none"/>
+                    <path d="M400 120 Q380 100 360 80" stroke="url(#branchGradient)" stroke-width="4" fill="none"/>
+                    <path d="M400 120 Q420 100 440 80" stroke="url(#branchGradient)" stroke-width="4" fill="none"/>
+                </g>
+                
+                <!-- 小細枝 - 刪除所有可能造成干擾的小分支 -->
+                <!-- 保留部分裝飾性細枝，但移除底部附近的 -->
+                <g class="small-branches">
+                    <path d="M340 160 Q320 150 300 140" stroke="#8B4513" stroke-width="2" fill="none"/>
+                    <path d="M460 160 Q480 150 500 140" stroke="#8B4513" stroke-width="2" fill="none"/>
+                </g>
+                
+                <!-- 定義漸變 -->
+                <defs>
+                    <linearGradient id="trunkGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#8B4513;stop-opacity:1" />
+                        <stop offset="50%" style="stop-color:#A0522D;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#654321;stop-opacity:1" />
+                    </linearGradient>
+                    
+                    <linearGradient id="branchGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#8B4513;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#A0522D;stop-opacity:1" />
+                    </linearGradient>
+                    
+                    <!-- 發光效果濾鏡 - 減弱至原先的10% -->
+                    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+                        <feGaussianBlur stdDeviation="0.3" result="coloredBlur"/>
+                        <feMerge> 
+                            <feMergeNode in="coloredBlur"/>
+                            <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                    </filter>
+                </defs>
+            </svg>                    
+
+            <!-- 技能葉子 - 增加間距避免重疊 -->
+            <div class="skill-leaves">
+                <!-- 量化金融技能 - 頂部區域，增加間距 -->
+                <div class="skill-leaf" style="top: 8%; left: 50%;" data-category="quant">
+                    <span data-lang-key="leaf-alpha">Alpha研究</span>
+                </div>
+                <div class="skill-leaf" style="top: 15%; left: 38%;" data-category="quant">
+                    <span data-lang-key="leaf-arbitrage">統計套利</span>
+                </div>
+                <div class="skill-leaf" style="top: 15%; left: 62%;" data-category="quant">
+                    <span data-lang-key="leaf-risk">風險管理</span>
+                </div>
+                <div class="skill-leaf" style="top: 24%; left: 40%;" data-category="quant">
+                    <span data-lang-key="leaf-derivatives">衍生品定價</span>
+                </div>
+                <div class="skill-leaf" style="top: 23%; left: 60%;" data-category="quant">
+                    <span data-lang-key="leaf-backtest">回測系統</span>
+                </div>
+                
+                <!-- 程式開發技能 - 左側區域，重新調整位置 -->
+                <div class="skill-leaf" style="top: 30%; left: 20%;" data-category="tech">
+                    <span data-lang-key="leaf-python">Python</span>
+                </div>
+                <div class="skill-leaf" style="top: 38%; left: 12%;" data-category="tech">
+                    <span data-lang-key="leaf-api">API整合</span>
+                </div>
+                <div class="skill-leaf" style="top: 46%; left: 8%;" data-category="tech">
+                    <span data-lang-key="leaf-automation">自動化</span>
+                </div>
+                <div class="skill-leaf" style="top: 54%; left: 16%;" data-category="tech">
+                    <span data-lang-key="leaf-cloud">雲端部署</span>
+                </div>
+                <div class="skill-leaf" style="top: 62%; left: 24%;" data-category="tech">
+                    <span data-lang-key="leaf-web">Web開發</span>
+                </div>
+                
+                <!-- 數據科學技能 - 右側區域，移除數據視覺化 -->
+                <div class="skill-leaf" style="top: 28%; left: 82%;" data-category="data">
+                    <span data-lang-key="leaf-stats">統計分析</span>
+                </div>
+                <div class="skill-leaf" style="top: 36%; left: 90%;" data-category="data">
+                    <span data-lang-key="leaf-ml">機器學習</span>
+                </div>
+                <div class="skill-leaf" style="top: 45%; left: 86%;" data-category="data">
+                    <span data-lang-key="leaf-timeseries">時間序列</span>
+                </div>
+                <div class="skill-leaf" style="top: 50%; left: 75%;" data-category="data">
+                    <span data-lang-key="leaf-dl">深度學習</span>
+                </div>
+                
+                <!-- 遊戲開發技能 - 左中區域，避免與其他重疊 -->
+                <div class="skill-leaf" style="top: 30%; left: 50%;" data-category="game">
+                    <span data-lang-key="leaf-gamedesign">遊戲設計</span>
+                </div>
+                <div class="skill-leaf" style="top: 37%; left: 59%;" data-category="game">
+                    <span data-lang-key="leaf-uiux">UI/UX</span>
+                </div>
+                <div class="skill-leaf" style="top: 37%; left: 43%;" data-category="game">
+                    <span data-lang-key="leaf-multiplayer">多人系統</span>
+                </div>
+                
+                <!-- 軟實力 - 中心區域，適當分散 -->
+                <div class="skill-leaf" style="top: 55%; left: 60%;" data-category="soft">
+                    <span data-lang-key="leaf-crossdomain">跨域整合</span>
+                </div>
+                <div class="skill-leaf" style="top: 60%; left: 50%;" data-category="soft">
+                    <span data-lang-key="leaf-problem">問題解決</span>
+                </div>
+                <div class="skill-leaf" style="top: 45%; left: 60%;" data-category="soft">
+                    <span data-lang-key="leaf-learning">自主學習</span>
+                </div>
+                <div class="skill-leaf" style="top: 68%; left: 43%;" data-category="soft">
+                    <span data-lang-key="leaf-innovation">創新思維</span>
+                </div>
+                <div class="skill-leaf" style="top: 69%; left: 55%;" data-category="soft">
+                    <span data-lang-key="leaf-execution">執行力</span>
+                </div>
+                <!-- 軟體開發支線新技能 -->
+                <div class="skill-leaf" style="top: 45%; left: 40%;" data-category="soft">
+                    <span data-lang-key="leaf-needs">需求分析</span>
+                </div>
+                <div class="skill-leaf" style="top: 48%; left: 25%;" data-category="tech">
+                    <span data-lang-key="leaf-system">系統設計</span>
+                </div>
+                <div class="skill-leaf" style="top: 55%; left: 35%;" data-category="tech">
+                    <span data-lang-key="leaf-database">資料庫設計</span>
+                </div>
+                <div class="skill-leaf" style="top: 50%; left: 50%;" data-category="soft">
+                    <span data-lang-key="leaf-project">專案管理</span>
+                </div>
+                <div class="skill-leaf" style="top: 38%; left: 25%;" data-category="tech">
+                    <span data-lang-key="leaf-insurtech">保險科技</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="skill-legend" style="margin-top: 3rem;">
+            <div class="legend-item" onclick="highlightSkills('quant')" data-category="quant">
+                <div class="legend-color" style="background: #40E0D0;"></div>
+                <span data-lang-key="legend-quant">量化金融</span>
+            </div>
+            <div class="legend-item" onclick="highlightSkills('tech')" data-category="tech">
+                <div class="legend-color" style="background: #FF8C00;"></div>
+                <span data-lang-key="legend-tech">程式開發</span>
+            </div>
+            <div class="legend-item" onclick="highlightSkills('data')" data-category="data">
+                <div class="legend-color" style="background: #9370DB;"></div>
+                <span data-lang-key="legend-data">數據科學</span>
+            </div>
+            <div class="legend-item" onclick="highlightSkills('game')" data-category="game">
+                <div class="legend-color" style="background: #FFD700;"></div>
+                <span data-lang-key="legend-game">遊戲開發</span>
+            </div>
+            <div class="legend-item" onclick="highlightSkills('soft')" data-category="soft">
+                <div class="legend-color" style="background: #5269d1;"></div>
+                <span data-lang-key="legend-soft">核心軟實力</span>
+            </div>
+            <div class="legend-item" onclick="highlightSkills('all')" data-category="all">
+                <div class="legend-color" style="background: linear-gradient(45deg, #40E0D0, #FF8C00, #9370DB, #FFD700, #5269d1);"></div>
+                <span data-lang-key="legend-all">顯示全部</span>
+            </div>
+        </div>
+        
+        <div class="highlight-box" style="margin-top: 3rem;">
+            <h3 data-lang-key="contact-title">聯繫方式</h3>
+            <p data-lang-key="contact-desc">期待與您深入交流各種合作可能</p>
+            <div class="skill-tags" style="margin-top: 1rem;">
+                <span class="skill-tag">Email: rickymama00@gmail.com</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 模態框 -->
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+    
+    <!-- 回到頂部按鈕 -->
+    <button class="back-to-top" id="backToTopBtn" onclick="scrollToTop()" title="回到頂部"></button>
+    
+    <script>
+        // ===== 語言系統 =====
+        let currentLang = 'zh';
+        
+        const translations = {
+            'zh': {
+                // ===== 導航相關 =====
+                'language-btn': '中文/English',
+                'nav-quant': '量化金融主線',
+                'nav-game': '遊戲開發支線',
+                'nav-software': '軟體開發支線',
+                'nav-skills': '技能樹總覽',
+                
+                // ===== 主頁標題 =====
+                'main-title': '量化金融技能樹',
+                'subtitle': '持續學習 · 精益求精 · 跨域創新',
+                
+                // ===== 技能標籤 =====
+                'tag-quant': '量化交易',
+                'tag-ml': '機器學習',
+                'tag-cloud': '雲端架構',
+                'tag-game': '遊戲開發',
+                'tag-fintech': '金融科技',
+                
+                // ===== 量化金融時間軸 =====
+                'quant-title': '量化金融發展歷程',
+                'timeline-1-title': '從Coding小白開始',
+                'timeline-1-desc': '社會學系統計分析的啟蒙，第一次接觸數據分析的魅力。',
+                'timeline-2-title': '雙主修金融系，與財務工程的初相識',
+                'timeline-2-desc': '理論與實務的初次碰撞，完成人生第一個金融實證分析。',
+                'timeline-3-title': '選擇權定價探索',
+                'timeline-3-desc': '從黑盒子到透明化，用Excel VBA實作Black-Scholes模型。',
+                'timeline-4-title': '初次挫折與反思',
+                'timeline-4-desc': '簡單策略慘敗，意識到量化交易需要更系統性的方法。',
+                'timeline-5-title': '統計套利突破',
+                'timeline-5-desc': '找到適合的研究方向，BNB-DOGE策略年化報酬53%。',
+                'timeline-6-title': 'WorldQuant Alpha 1.0',
+                'timeline-6-desc': '初探Alpha因子，從手動嘗試到自動化搜索的轉變。',
+                'timeline-7-title': '貪婪演算法優化',
+                'timeline-7-desc': '解決相關性過高問題，設計智能搜索策略。',
+                'timeline-8-title': '老鼠屎清理機制',
+                'timeline-8-desc': '自創演算法，實現汰弱留強，逐步提升搜索效率。',
+                'timeline-9-title': '雲端部署挑戰',
+                'timeline-9-desc': '2000行代碼遷移上雲，實現24/7自動運行。',
+                'tag-survey': '問卷調查',
+                'tag-implied-vol': '隱含波動率',
+                'tag-mean-reversion': '均值回歸',
+                'tag-momentum': '動能策略',
+                'tag-reflection': '反思學習',
+                'tag-cointegration': '共整檢驗',
+                'tag-algo-design': '演算法設計',
+                'tag-optimization': '優化策略',
+                'tag-system-opt': '系統優化',
+                'game-metric-5': '5種',
+                'game-metric-6': '6人',
+                
+                // ===== WorldQuant Alpha系統 =====
+                'alpha-title': 'WorldQuant Alpha研究 2.0 - 全自動化演進',
+                'alpha-concept': '核心理念：持續精益求精 · 極致自動化 · 系統化創新',
+                'alpha-desc': '面對如何持續產出高品質Alpha的挑戰，我設計了一套完整的自動化解決方案，從數據採集到策略優化形成閉環系統。',
+                'system-flow-title': '系統架構流程圖',
+                'flow-1-title': '智能數據採集',
+                'flow-1-desc': '爬蟲自動抓取WorldQuant數據集與操作符，智能過濾保留高實用性數據',
+                'flow-2-title': 'GA演算法引擎',
+                'flow-2-desc': '遺傳算法自動探索Alpha空間，效率有質的提升',
+                'flow-3-title': '自動化回測',
+                'flow-3-desc': '候選Alpha自動進入模擬系統，生成完整的績效報告',
+                'flow-4-title': '智能學習優化',
+                'flow-4-desc': '分析報告反饋至GA引擎，持續優化下一代Alpha生成策略',
+                'flow-5-title': '組合優化系統',
+                'flow-5-desc': '爬取所有Alpha的5年Daily PnL，只選擇能提升整體組合表現的Alpha',
+                'flow-6-title': '潛力Alpha培育（未來計畫）',
+                'flow-6-desc': '自動分析未達標原因，嘗試優化使其成為可提交的Alpha',
+                'results-title': '當前成果展示',
+                'metric-alpha-count': '成功開發Alpha數量',
+                'metric-sharpe': '投資組合Sharpe Ratio',
+                'vision-text': '在量化金融的道路上，我不只在尋找ALPHA，更是創造價值',
+                
+                // ===== 遊戲開發 =====
+                'game-title': '金融教育遊戲開發',
+                'game-vision-title': '專案願景：讓金融學習變得有趣',
+                'game-vision-desc': '作為社會學系跨域到金融領域的學生，我深刻體會到貨幣銀行學等核心課程的學習痛點。與其死記硬背枯燥的理論，不如透過遊戲化的方式，讓學生在實戰中理解央行政策工具的運用。',
+                'game-main-title': '全球央行對戰遊戲',
+                'game-feature-title': '核心創新點',
+                'game-feature-1': '跨國對戰系統：擺脫傳統美國視角，體驗全球央行博弈',
+                'game-feature-2': '實時政策影響：每個決策都會影響其他玩家的經濟環境',
+                'game-feature-3': '同儕競爭學習：透過對戰激發學習動力與創意思考',
+                'game-feature-4': '真實模擬體驗：親身體驗央行決策者的思維模式',
+                'game-dev-process': '開發歷程',
+                'game-tech-arch': '核心技術架構圖',
+                'game-features': '遊戲特色',
+                'game-tools': '政策工具',
+                'game-players': '同時在線',
+                'game-cross-nation': '跨國',
+                'game-cb-game': '央行博弈',
+                'game-random': '隨機',
+                'game-events': '突發事件系統',
+                'game-skills': '專屬技能',
+                'game-nation-skills': '國家特色主、被動技能',
+                'game-reality': '真實性',
+                'game-econ-logic': '參考真實經濟邏輯',
+                'game-future-title': '未來展望',
+                'game-future-desc': '目前已完成主要遊戲部分的設計，未來會完善遊玩體驗、設計評分系統、擴充更多央行角色與事件系統。並開始嘗試與大學商學院接洽，目標是將這個遊戲賣給大學，我的願景是讓這個遊戲成為未來每位商學院學生必備的學習工具。',
+                
+                // ===== 軟體開發 =====
+                'software-title': '軟體開發支線',
+                'software-vision': '從實務痛點出發，用技術解決真實問題',
+                'software-desc': '暑假在南山人壽實習期間，深度體驗保險業務銷售流程，發現現有工具無法滿足客戶與業務員的核心需求',
+                'project-title': '🛡️ 保險理賠計算工具',
+                'project-origin-title': '📋 緣起與需求分析',
+                'project-origin-desc': '在南山人壽實習期間，我親身觀察到保險銷售過程中的核心痛點：客戶最關心的是「出事能拿到多少錢」，但現有工具無法直觀回答這個問題。當客戶擁有多份保險時，業務員需要手動計算各保險間的理賠關係，過程複雜且容易出錯。',
+                'project-solution-title': '💡 解決方案設計',
+                'project-solution-desc': '我主動向主管提出開發一套保險理賠計算工具的想法，獲得認可後開始著手設計。工具核心功能是讓業務員能快速輸入客戶保單組合，選擇具體理賠情境（如車禍骨折、肝癌手術等），系統自動計算總理賠金額，並清楚顯示各保險的啟動條件與給付明細。',
+                'tech-arch-title': '🏗️ 技術架構',
+                'frontend-title': '前端界面',
+                'frontend-1': 'React.js 響應式設計',
+                'frontend-2': '保單搜尋與輸入功能',
+                'frontend-3': '情境選擇介面',
+                'frontend-4': '理賠結果視覺化',
+                'backend-title': '後端邏輯',
+                'backend-1': '保險商品資料庫',
+                'backend-2': '理賠事件分類系統',
+                'backend-3': '多保險邏輯計算引擎',
+                'backend-4': '條款解析與匹配',
+                'demo-title': '📊 核心功能展示',
+                'value-title': '🎯 項目價值與成果',
+                'value-1-title': '解決客戶痛點',
+                'value-1-desc': '直觀回答「能拿到多少錢」的核心問題，提升客戶理解度與信任感',
+                'value-2-title': '提升業務效率',
+                'value-2-desc': '自動化計算流程，減少人工錯誤，新進業務員也能快速上手',
+                'value-3-title': '技術整合創新',
+                'value-3-desc': '結合金融專業知識與程式技能，創造具實用價值的金融科技解決方案',
+                'future-dev-title': '🚀 持續發展',
+                'future-dev-desc': '目前正積極與主管接洽，爭取更多保險商品資料與理賠案例，計劃擴充商品資料庫並優化計算邏輯。目標是將此工具實際應用於業務銷售流程中，提升整體服務品質。',
+                'demo-link-text': '🔗 體驗測試版工具',
+                
+                // ===== 技能樹總覽 =====
+                'skills-title': '核心技能與未來展望',
+                'skills-vision': '用努力做養分、用汗水來灌溉，願我的技能樹持續成長壯大',
+                'legend-quant': '量化金融',
+                'legend-tech': '程式開發',
+                'legend-data': '數據科學',
+                'legend-game': '遊戲開發',
+                'legend-soft': '核心軟實力',
+                'legend-all': '顯示全部',
+                'contact-title': '聯繫方式',
+                'contact-desc': '期待與您深入交流各種合作可能',
+                
+                // ===== 技能葉子 =====
+                'leaf-alpha': 'Alpha研究',
+                'leaf-arbitrage': '統計套利',
+                'leaf-risk': '風險管理',
+                'leaf-derivatives': '衍生品定價',
+                'leaf-backtest': '回測系統',
+                'leaf-python': 'Python',
+                'leaf-api': 'API整合',
+                'leaf-automation': '自動化',
+                'leaf-cloud': '雲端部署',
+                'leaf-web': 'Web開發',
+                'leaf-stats': '統計分析',
+                'leaf-ml': '機器學習',
+                'leaf-timeseries': '時間序列',
+                'leaf-dl': '深度學習',
+                'leaf-gamedesign': '遊戲設計',
+                'leaf-uiux': 'UI/UX',
+                'leaf-multiplayer': '多人系統',
+                'leaf-crossdomain': '跨域整合',
+                'leaf-problem': '問題解決',
+                'leaf-learning': '自主學習',
+                'leaf-innovation': '創新思維',
+                'leaf-execution': '執行力',
+                'leaf-needs': '需求分析',
+                'leaf-system': '系統設計',
+                'leaf-database': '資料庫設計',
+                'leaf-project': '專案管理',
+                'leaf-insurtech': '保險科技',
+                
+                // ===== 按鈕文字 =====
+                'detail-btn': '查看詳情 →',
+                'view-report': '查看完整報告 →',
+                'view-code': '查看程式碼 →',
+                'view-algo': '查看演算法 →',
+                'view-innovation': '查看創新系統 →',
+                'view-arch': '查看架構 →',
+                'view-capm': '查看CAPM分析 →',
+                'view-volatility': '查看波動率分析 →',
+                'view-failure': '查看失敗案例 →'
+            },
+            'en': {
+                // ===== Navigation =====
+                'language-btn': 'English/中文',
+                'nav-quant': 'Quantitative Finance',
+                'nav-game': 'Game Development',
+                'nav-software': 'Software Development',
+                'nav-skills': 'Skills Overview',
+                
+                // ===== Main Title =====
+                'main-title': 'Quantitative Finance Skill Tree',
+                'subtitle': 'Continuous Learning · Excellence · Cross-domain Innovation',
+                
+                // ===== Skill Tags =====
+                'tag-quant': 'Quant Trading',
+                'tag-ml': 'Machine Learning',
+                'tag-cloud': 'Cloud Architecture',
+                'tag-game': 'Game Development',
+                'tag-fintech': 'FinTech',
+                
+                // ===== Quantitative Finance Timeline =====
+                'quant-title': 'Quantitative Finance Journey',
+                'timeline-1-title': 'Starting from Coding Beginner',
+                'timeline-1-desc': 'Enlightenment from sociological statistical analysis, first encounter with the magic of data analysis.',
+                'timeline-2-title': 'Double Major in Finance, First Meeting with Financial Engineering',
+                'timeline-2-desc': 'First collision of theory and practice, completed my first financial empirical analysis.',
+                'timeline-3-title': 'Options Pricing Exploration',
+                'timeline-3-desc': 'From black box to transparency, implementing Black-Scholes model with Excel VBA.',
+                'timeline-4-title': 'First Setback and Reflection',
+                'timeline-4-desc': 'Simple strategy failed miserably, realized quantitative trading needs more systematic methods.',
+                'timeline-5-title': 'Statistical Arbitrage Breakthrough',
+                'timeline-5-desc': 'Found suitable research direction, BNB-DOGE strategy achieved 53% annualized return.',
+                'timeline-6-title': 'WorldQuant Alpha 1.0',
+                'timeline-6-desc': 'First exploration of Alpha factors, transformation from manual attempts to automated search.',
+                'timeline-7-title': 'Greedy Algorithm Optimization',
+                'timeline-7-desc': 'Solved high correlation issues, designed intelligent search strategy.',
+                'timeline-8-title': 'Rat Dropping Cleaning Mechanism',
+                'timeline-8-desc': 'Self-created algorithm, achieving survival of the fittest, gradually improving search efficiency.',
+                'timeline-9-title': 'Cloud Deployment Challenge',
+                'timeline-9-desc': '2000 lines of code migrated to cloud, achieving 24/7 automatic operation.',
+                'tag-survey': 'Survey Research',
+                'tag-implied-vol': 'Implied Volatility',
+                'tag-mean-reversion': 'Mean Reversion',
+                'tag-momentum': 'Momentum Strategy',
+                'tag-reflection': 'Reflective Learning',
+                'tag-cointegration': 'Cointegration',
+                'tag-algo-design': 'Algorithm Design',
+                'tag-optimization': 'Optimization Strategy',
+                'tag-system-opt': 'System Optimization',
+                'game-metric-5': '5 Types',
+                'game-metric-6': '6 Players',
+
+                
+                // ===== WorldQuant Alpha System =====
+                'alpha-title': 'WorldQuant Alpha Research 2.0 - Fully Automated Evolution',
+                'alpha-concept': 'Core Concept: Continuous Excellence · Ultimate Automation · Systematic Innovation',
+                'alpha-desc': 'Facing the challenge of continuously producing high-quality Alphas, I designed a complete automated solution, forming a closed-loop system from data collection to strategy optimization.',
+                'system-flow-title': 'System Architecture Flow Chart',
+                'flow-1-title': 'Intelligent Data Collection',
+                'flow-1-desc': 'Web crawler automatically fetches WorldQuant datasets and operators, intelligently filtering to retain highly practical data',
+                'flow-2-title': 'GA Algorithm Engine',
+                'flow-2-desc': 'Genetic algorithm automatically explores Alpha space, achieving qualitative efficiency improvement',
+                'flow-3-title': 'Automated Backtesting',
+                'flow-3-desc': 'Candidate Alphas automatically enter simulation system, generating complete performance reports',
+                'flow-4-title': 'Intelligent Learning Optimization',
+                'flow-4-desc': 'Analysis reports feedback to GA engine, continuously optimizing next-generation Alpha generation strategies',
+                'flow-5-title': 'Portfolio Optimization System',
+                'flow-5-desc': 'Crawl 5-year Daily PnL of all Alphas, only select Alphas that improve overall portfolio performance',
+                'flow-6-title': 'Potential Alpha Cultivation (Future Plan)',
+                'flow-6-desc': 'Automatically analyze reasons for not meeting standards, attempt optimization to make them submittable Alphas',
+                'results-title': 'Current Results',
+                'metric-alpha-count': 'Successfully Developed Alphas',
+                'metric-sharpe': 'Portfolio Sharpe Ratio',
+                'vision-text': 'On the path of quantitative finance, I\'m not just finding ALPHA, but creating value',
+                
+                // ===== Game Development =====
+                'game-title': 'Financial Education Game Development',
+                'game-vision-title': 'Project Vision: Making Financial Learning Fun',
+                'game-vision-desc': 'As a student crossing from sociology to finance, I deeply understand the learning pain points of core courses like Money and Banking. Instead of memorizing dry theories, why not let students understand central bank policy tools through gamification in practice.',
+                'game-main-title': 'Global Central Bank Battle Game',
+                'game-feature-title': 'Core Innovation Points',
+                'game-feature-1': 'Cross-national Battle System: Break away from traditional US perspective, experience global central bank games',
+                'game-feature-2': 'Real-time Policy Impact: Every decision affects other players\' economic environment',
+                'game-feature-3': 'Peer Competition Learning: Stimulate learning motivation and creative thinking through battles',
+                'game-feature-4': 'Realistic Simulation Experience: Personally experience central bank decision-makers\' thinking patterns',
+                'game-dev-process': 'Development Process',
+                'game-tech-arch': 'Core Technical Architecture',
+                'game-features': 'Game Features',
+                'game-tools': 'Policy Tools',
+                'game-players': 'Concurrent Players',
+                'game-cross-nation': 'Cross-nation',
+                'game-cb-game': 'Central Bank Game',
+                'game-random': 'Random',
+                'game-events': 'Event System',
+                'game-skills': 'Exclusive Skills',
+                'game-nation-skills': 'National Active/Passive Skills',
+                'game-reality': 'Realism',
+                'game-econ-logic': 'Based on Real Economic Logic',
+                'game-future-title': 'Future Outlook',
+                'game-future-desc': 'Currently completed main game design, will improve gameplay experience, design scoring system, expand more central bank roles and event systems. Starting to approach university business schools, aiming to sell this game to universities. My vision is to make this game an essential learning tool for every future business school student.',
+                
+                // ===== Software Development =====
+                'software-title': 'Software Development Branch',
+                'software-vision': 'Starting from practical pain points, solving real problems with technology',
+                'software-desc': 'During summer internship at Nan Shan Life Insurance, deeply experienced insurance sales process, found existing tools cannot meet core needs of customers and agents',
+                'project-title': '🛡️ Insurance Claims Calculator',
+                'project-origin-title': '📋 Origin and Needs Analysis',
+                'project-origin-desc': 'During my internship at Nan Shan Life Insurance, I personally observed the core pain point in insurance sales: Customers care most about "how much money they can get if something happens", but existing tools cannot intuitively answer this question. When customers have multiple insurance policies, agents need to manually calculate the claim relationships between insurances, which is complex and error-prone.',
+                'project-solution-title': '💡 Solution Design',
+                'project-solution-desc': 'I proactively proposed to my supervisor the idea of developing an Insurance Claims Calculator, and after approval, began designing. The core function is to allow agents to quickly input customer policy combinations, select specific claim scenarios (such as traffic accident fractures, liver cancer surgery, etc.), and the system automatically calculates total claim amounts, clearly showing activation conditions and payment details for each insurance.',
+                'tech-arch-title': '🏗️ Technical Architecture',
+                'frontend-title': 'Frontend Interface',
+                'frontend-1': 'React.js Responsive Design',
+                'frontend-2': 'Policy Search and Input',
+                'frontend-3': 'Scenario Selection Interface',
+                'frontend-4': 'Claims Result Visualization',
+                'backend-title': 'Backend Logic',
+                'backend-1': 'Insurance Product Database',
+                'backend-2': 'Claims Event Classification System',
+                'backend-3': 'Multi-insurance Logic Engine',
+                'backend-4': 'Terms Parsing and Matching',
+                'demo-title': '📊 Core Function Demo',
+                'value-title': '🎯 Project Value and Results',
+                'value-1-title': 'Solving Customer Pain Points',
+                'value-1-desc': 'Intuitively answers the core question of "how much money can I get", improving customer understanding and trust',
+                'value-2-title': 'Improving Business Efficiency',
+                'value-2-desc': 'Automated calculation process, reducing human errors, new agents can quickly get started',
+                'value-3-title': 'Technology Integration Innovation',
+                'value-3-desc': 'Combining financial expertise with programming skills, creating practical fintech solutions',
+                'future-dev-title': '🚀 Continuous Development',
+                'future-dev-desc': 'Currently actively engaging with supervisors to obtain more insurance product data and claim cases, planning to expand product database and optimize calculation logic. The goal is to actually apply this tool in business sales processes to improve overall service quality.',
+                'demo-link-text': '🔗 Try Beta Version',
+                
+                // ===== Skills Overview =====
+                'skills-title': 'Core Skills and Future Vision',
+                'skills-vision': 'Using effort as nutrients, sweat as irrigation, may my skill tree continue to grow',
+                'legend-quant': 'Quantitative Finance',
+                'legend-tech': 'Programming',
+                'legend-data': 'Data Science',
+                'legend-game': 'Game Development',
+                'legend-soft': 'Core Soft Skills',
+                'legend-all': 'Show All',
+                'contact-title': 'Contact',
+                'contact-desc': 'Looking forward to exploring collaboration opportunities with you',
+                
+                // ===== Skill Leaves =====
+                'leaf-alpha': 'Alpha Research',
+                'leaf-arbitrage': 'Statistical Arbitrage',
+                'leaf-risk': 'Risk Management',
+                'leaf-derivatives': 'Derivatives Pricing',
+                'leaf-backtest': 'Backtesting System',
+                'leaf-python': 'Python',
+                'leaf-api': 'API Integration',
+                'leaf-automation': 'Automation',
+                'leaf-cloud': 'Cloud Deployment',
+                'leaf-web': 'Web Development',
+                'leaf-stats': 'Statistical Analysis',
+                'leaf-ml': 'Machine Learning',
+                'leaf-timeseries': 'Time Series',
+                'leaf-dl': 'Deep Learning',
+                'leaf-gamedesign': 'Game Design',
+                'leaf-uiux': 'UI/UX',
+                'leaf-multiplayer': 'Multiplayer System',
+                'leaf-crossdomain': 'Cross-domain Integration',
+                'leaf-problem': 'Problem Solving',
+                'leaf-learning': 'Self-learning',
+                'leaf-innovation': 'Innovation',
+                'leaf-execution': 'Execution',
+                'leaf-needs': 'Needs Analysis',
+                'leaf-system': 'System Design',
+                'leaf-database': 'Database Design',
+                'leaf-project': 'Project Management',
+                'leaf-insurtech': 'InsurTech',
+                
+                // ===== Buttons =====
+                'detail-btn': 'View Details →',
+                'view-report': 'View Full Report →',
+                'view-code': 'View Code →',
+                'view-algo': 'View Algorithm →',
+                'view-innovation': 'View Innovation System →',
+                'view-arch': 'View Architecture →',
+                'view-capm': 'View CAPM Analysis →',
+                'view-volatility': 'View Volatility Analysis →',
+                'view-failure': 'View Failure Case →'
+            }
+        };
+
+        // ===== 原有功能保持不變 =====
+        
+        // 粒子背景效果
+        const canvas = document.getElementById('particles-bg');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.radius = Math.random() * 2;
+                this.opacity = Math.random() * 0.5 + 0.2;
+            }
+            
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                
+                if (this.x < 0 || this.x > canvas.width) this.vx = -this.vx;
+                if (this.y < 0 || this.y > canvas.height) this.vy = -this.vy;
+            }
+            
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(64, 224, 208, ${this.opacity})`;
+                ctx.fill();
+            }
+        }
+        
+        const particles = [];
+        for (let i = 0; i < 100; i++) {
+            particles.push(new Particle());
+        }
+        
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            
+            particles.forEach((p1, i) => {
+                particles.slice(i + 1).forEach(p2 => {
+                    const dx = p1.x - p2.x;
+                    const dy = p1.y - p2.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 100) {
+                        ctx.beginPath();
+                        ctx.moveTo(p1.x, p1.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.strokeStyle = `rgba(64, 224, 208, ${0.2 * (1 - distance / 100)})`;
+                        ctx.stroke();
+                    }
+                });
+            });
+            
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+        
+        // 技能高亮功能
+        function highlightSkills(category) {
+            const allLeaves = document.querySelectorAll('.skill-leaf');
+            const allLegendItems = document.querySelectorAll('.legend-item');
+            
+            // 重置所有圖例項目的active狀態
+            allLegendItems.forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // 設置當前點擊的圖例項目為active
+            const currentLegend = document.querySelector(`.legend-item[data-category="${category}"]`);
+            if (currentLegend) {
+                currentLegend.classList.add('active');
+            }
+            
+            if (category === 'all') {
+                // 顯示全部技能
+                allLeaves.forEach(leaf => {
+                    leaf.classList.remove('highlighted', 'dimmed');
+                });
+            } else {
+                // 高亮特定類別的技能
+                allLeaves.forEach(leaf => {
+                    leaf.classList.remove('highlighted', 'dimmed');
+                    
+                    if (leaf.dataset.category === category) {
+                        leaf.classList.add('highlighted');
+                    } else {
+                        leaf.classList.add('dimmed');
+                    }
+                });
+            }
+        }
+        
+        // 回到頂部功能
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+        
+        // 控制回到頂部按鈕的顯示/隱藏
+        function handleBackToTopButton() {
+            const backToTopBtn = document.getElementById('backToTopBtn');
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (scrollTop > 300) {
+                backToTopBtn.classList.add('visible');
+            } else {
+                backToTopBtn.classList.remove('visible');
+            }
+        }
+        
+        // 監聽滾動事件
+        window.addEventListener('scroll', () => {
+            handleBackToTopButton();
+            
+            // 原有的滾動效果
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const nav = document.querySelector('.skill-tree-nav');
+            
+            if (scrollTop > lastScrollTop && scrollTop > 100) {
+                nav.style.transform = 'translateY(-100%)';
+            } else {
+                nav.style.transform = 'translateY(0)';
+            }
+            
+            lastScrollTop = scrollTop;
+        });
+        
+        // 頁面載入時初始化按鈕狀態
+        document.addEventListener('DOMContentLoaded', () => {
+            highlightSkills('all');
+            handleBackToTopButton();
+        });
+        
+        // 技能樹分支切換
+        function showBranch(branch) {
+            document.querySelectorAll('.branch-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const validBranches = ['quant', 'game', 'skills', 'software'];
+            
+            if (validBranches.includes(branch)) {
+                const targetSection = document.getElementById(`${branch}-branch`);
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                }
+            }
+        }
+        
+        // 顯示詳細信息 - 更新函數以支持多語言
+        function showDetail(type) {
+            const modal = document.getElementById('detailModal');
+            const modalContent = document.getElementById('modalContent');
+            
+            const detailsData = details[currentLang] || details['zh'];
+            
+            if (detailsData[type]) {
+                modalContent.innerHTML = `
+                    <h2 style="color: #40E0D0; margin-bottom: 1.5rem;">${detailsData[type].title}</h2>
+                    ${detailsData[type].content}
+                `;
+                modal.style.display = 'block';
+            }
+        }
+        
+        // 多語言詳細內容
+        const details = {
+            'zh': {
+                'stats-beginning': {
+                    title: '統計分析的啟蒙',
+                    content: `
+                        <h3>🎯 目標與挑戰</h3>
+                        <p>分析1000份問卷數據，尋找社會現象背後的規律</p>
+                        
+                        <h3>🔧 技術實現</h3>
+                        <ul>
+                            <li>使用SPSS進行多元統計分析</li>
+                            <li>建立迴歸模型驗證假設</li>
+                            <li>處理缺失值和異常值</li>
+                        </ul>
+                        
+                        <h3>💡 收穫與成長</h3>
+                        <p>這是我第一次體驗到數據挖掘的魅力，從雜亂的數據中找出有意義的模式。這段經歷奠定了我的量化思維基礎，也讓我開始對金融數據分析產生興趣。</p>
+                    `
+                },
+                'capm-project': {
+                    title: '鴻海CAPM模型分析',
+                    content: `
+                        <h3>📊 分析結果</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0;">
+                            <div style="background: rgba(64, 224, 208, 0.1); padding: 1rem; border-radius: 8px;">
+                                <strong>Beta係數</strong><br>
+                                <span style="font-size: 2rem; color: #40E0D0;">1.23</span>
+                            </div>
+                            <div style="background: rgba(64, 224, 208, 0.1); padding: 1rem; border-radius: 8px;">
+                                <strong>R-squared</strong><br>
+                                <span style="font-size: 2rem; color: #40E0D0;">0.67</span>
+                            </div>
+                        </div>
+                        
+                        <h3>🔧 技術挑戰</h3>
+                        <ul>
+                            <li>學習資料庫操作，抓取鴻海股價數據</li>
+                            <li>手動計算Beta係數，理解CAPM模型原理</li>
+                            <li>驗證理論與實際市場的差異</li>
+                        </ul>
+                        
+                        <h3>💡 關鍵發現</h3>
+                        <p>鴻海的Beta值為1.23，顯示其股價波動大於市場平均。</p>
+                    `
+                },
+                'options-pricing': {
+                    title: '隱含波動率曲線分析',
+                    content: `
+                        <h3>📈 實際市場數據分析</h3>
+                        <div style="background: rgba(64, 224, 208, 0.1); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                <div style="text-align: center;">
+                                    <strong>蒙地卡羅模擬</strong><br>
+                                    <span style="font-size: 2rem; color: #40E0D0;">374.2</span>
+                                </div>
+                                <div style="text-align: center;">
+                                    <strong>Black-Scholes</strong><br>
+                                    <span style="font-size: 2rem; color: #FF8C00;">340.2</span>
+                                </div>
+                            </div>
+                            <div style="margin-top: 1rem; padding: 0.5rem; background: rgba(255, 140, 0, 0.1); border-radius: 8px;">
+                                <strong>市場實際價格對比</strong>
+                                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; margin-top: 0.5rem; text-align: center;">
+                                    <div>
+                                        <small>開盤價</small><br>
+                                        <strong>259</strong>
+                                    </div>
+                                    <div>
+                                        <small>最高價</small><br>
+                                        <strong>336</strong>
+                                    </div>
+                                    <div>
+                                        <small>最低價</small><br>
+                                        <strong>244</strong>
+                                    </div>
+                                    <div>
+                                        <small>收盤價</small><br>
+                                        <strong>333</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h3>🔧 技術實現</h3>
+                        <ul>
+                            <li>用Excel VBA實作Black-Scholes模型</li>
+                            <li>繪製波動率微笑曲線</li>
+                            <li>比較理論價格與市場價格差異</li>
+                        </ul>
+                        
+                        <h3>💡 重要發現</h3>
+                        <p>市場價格與理論模型存在顯著差異，這反映了市場情緒和流動性等因素的影響。這次經驗讓我理解到金融市場的複雜性。</p>
+                    `
+                },
+                'first-failure': {
+                    title: '量化策略初體驗',
+                    content: `
+                        <h3>📉 慘痛的教訓</h3>
+                        <p>嘗試用excel製作簡易的量化交易策略，結果發現績效慘不忍睹</p>
+                        <div style="background: rgba(255, 140, 0, 0.1); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                            <p><strong>25年回測結果對比：</strong></p>
+                            <ul>
+                                <li>動能策略：2.04倍（年化3.1%）</li>
+                                <li>均值回歸：7.51倍（年化8.4%）</li>
+                                <li>買入持有：23.931倍（年化13.2%）</li>
+                            </ul>
+                        </div>
+                        
+                        <h3>❓ 失敗原因分析</h3>
+                        <ul>
+                            <li>過度依賴技術指標，缺乏統計基礎</li>
+                            <li>沒有針對資料進行分析，沒有找出明確信號</li>
+                            <li>模型過於陽春，沒有針對股票進行客製化處理</li>
+                        </ul>
+                        
+                        <h3>💡 寶貴的反思</h3>
+                        <p>我意識到戰勝市場沒有想像中簡單，量化交易中還有很多我需要學習的知識。</p>
+                    `
+                },
+                'pairs-trading': {
+                    title: '統計套利策略突破',
+                    content: `
+                        <h3>📄 策略績效</h3>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin: 1rem 0;">
+                            <div style="background: rgba(64, 224, 208, 0.1); padding: 1rem; border-radius: 8px; text-align: center;">
+                                <strong>年化報酬</strong><br>
+                                <span style="font-size: 2rem; color: #40E0D0;">53.28%</span>
+                            </div>
+                            <div style="background: rgba(64, 224, 208, 0.1); padding: 1rem; border-radius: 8px; text-align: center;">
+                                <strong>夏普比率</strong><br>
+                                <span style="font-size: 2rem; color: #40E0D0;">2.42</span>
+                            </div>
+                            <div style="background: rgba(64, 224, 208, 0.1); padding: 1rem; border-radius: 8px; text-align: center;">
+                                <strong>最大回撤</strong><br>
+                                <span style="font-size: 2rem; color: #40E0D0;">0.05%</span>
+                            </div>
+                            <div style="background: rgba(64, 224, 208, 0.1); padding: 1rem; border-radius: 8px; text-align: center;">
+                                <strong>勝率</strong><br>
+                                <span style="font-size: 2rem; color: #40E0D0;">97.6%</span>
+                            </div>
+                        </div>
+                        
+                        <h3>🔧 技術突破</h3>
+                        <ul>
+                            <li>透過AI學習API使用，從幣安抓取5年數據</li>
+                            <li>自學Python編程，實現共整檢驗</li>
+                            <li>採用Ornstein-Uhlenbeck過程建模</li>
+                            <li>使用Bertram方法計算最適交易門檻</li>
+                        </ul>
+                        
+                        <h3>💡 關鍵成功因素</h3>
+                        <p>統計套利的核心邏輯清晰，適用於多種資產。這次成功驗證了系統化方法的重要性。</p>
+                        
+                        <h3>⚠️ 挑戰與限制</h3>
+                        <p>只有利用python跑回測，未能在真實市場中嘗試，因此不能衡量理論計算與實際交易的差距。</p>
+                    `
+                },
+                'alpha-v1': {
+                    title: 'Alpha自動搜索程式',
+                    content: `
+                        <h3>❓ 困難</h3>
+                        <p>手動模擬alpha效率極差，費時費力且成果有限</p>
+                        
+                        <h3>💡 解方</h3>
+                        <p>學習自動化知識，嘗試架設自動搜索模板</p>
+                        
+                        <h3>🤖 程式碼展示</h3>
+                        <pre style="background: #1a1a1a; color: #40E0D0; padding: 1rem; border-radius: 8px; overflow-x: auto;">
+template = '''
+data1 = ts_backfill(&lt;funds_data&gt;, &lt;backfill_days&gt;);
+data2 = ts_backfill(&lt;debt_data&gt;, &lt;backfill_days&gt;);
+diff = &lt;diff_op&gt;(data1, data2);
+alpha = &lt;ts_neut_op&gt;(diff, &lt;ts_neut_days&gt;);
+'''
+
+for i in range(1000):
+    expr = template
+    for name, choices in space.items():
+        expr = expr.replace(name, np.random.choice(choices))
+    
+    success, alpha_res = simulate(expr, sess)
+    if success and alpha_res['is']['fitness'] > 1.0:
+        print(f"✅ 發現高質量Alpha: {alpha_res['id']}")
+</pre>
+                        
+                        <h3>💡 創新點</h3>
+                        <ul>
+                            <li>模板化設計，將複雜表達式參數化</li>
+                            <li>自動化測試取代人工嘗試</li>
+                            <li>解放雙手，效率顯著提升</li>
+                        </ul>
+                    `
+                },
+                'greedy-algo': {
+                    title: '貪婪搜索演算法',
+                    content: `
+                        <h3>❓ 遇到問題</h3>
+                        <p>完全隨機的模擬方式產出極不穩定，很需要運氣才能找到alpha</p>
+                        
+                        <h3>💡 解決方案</h3>
+                        <p>嘗試導入貪婪式演算法，希望能提升效率</p>
+                        
+                        <h3>🧠 演算法設計</h3>
+                        <div style="background: rgba(64, 224, 208, 0.1); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                            <p><strong>流程：</strong>隨機探索 → 評估結果 → 局部優化 → 重新隨機</p>
+                        </div>
+                        
+                        <h3>⚠️ 新的挑戰</h3>
+                        <ul>
+                            <li>大量產出的Alpha相關性過高</li>
+                            <li>容易陷入局部最優的困境使得效率降低，耗費過多時間</li>
+                            <li>需要在隨機性和方向性之間平衡</li>
+                        </ul>
+                    `
+                },
+                'rat-cleaning': {
+                    title: '老鼠屎清理演算法',
+                    content: `
+                        <h3>💡 核心理念</h3>
+                        <p>希望在模擬的時候達到汰弱留強的效果，逐步提升搜索效率</p>
+                        
+                        <h3>🎯 設計思路</h3>
+                        <p>某些參數組合天生就容易失敗，就像一顆老鼠屎壞了一鍋粥。透過統計分析識別這些"老鼠屎"並自動清除，讓搜索空間越來越純淨。</p>
+                        
+                        <h3>🔧 實現方式</h3>
+                        <ul>
+                            <li>記錄每個參數的成功率</li>
+                            <li>統計失敗頻率高的組合</li>
+                            <li>自動移除高失敗率參數</li>
+                            <li>持續優化搜索空間</li>
+                        </ul>
+                        
+                        <h3>📊 預期效果</h3>
+                        <p>隨著統計樣本增大，搜索空間逐漸收斂到高成功率區域，顯著提升Alpha發現效率</p>
+                    `
+                },
+                'cloud-deploy': {
+                    title: '雲端自動化部署',
+                    content: `
+                        <h3>❓ 遇到的問題</h3>
+                        <p>學生裝備限制，無良好網路環境，促使我開發穩定的雲端環境</p>
+                        
+                        <h3>☁️ 系統架構</h3>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1rem 0;">
+                            <div style="background: rgba(64, 224, 208, 0.1); padding: 1rem; border-radius: 8px; text-align: center;">
+                                <strong>平台</strong><br>
+                                Google Cloud Platform
+                            </div>
+                            <div style="background: rgba(64, 224, 208, 0.1); padding: 1rem; border-radius: 8px; text-align: center;">
+                                <strong>代碼規模</strong><br>
+                                2000+ 行
+                            </div>
+                            <div style="background: rgba(64, 224, 208, 0.1); padding: 1rem; border-radius: 8px; text-align: center;">
+                                <strong>運行時間</strong><br>
+                                24/7 自動化
+                            </div>
+                        </div>
+                        
+                        <h3>⚡ 技術挑戰</h3>
+                        <ul>
+                            <li>環境配置和依賴管理</li>
+                            <li>錯誤處理和自動重試機制</li>
+                            <li>API請求頻率控制</li>
+                            <li>成本優化和資源管理</li>
+                        </ul>
+                        
+                        <h3>🏆 最終成果</h3>
+                        <p>成功實現雲端24小時自動運行，徹底解決了本地環境的限制。</p>
+                    `
+                }
+            },
+
+            'en': {
+                'stats-beginning': {
+                    title: 'Statistical Analysis Enlightenment',
+                    content: `
+                        <h3>🎯 Goals and Challenges</h3>
+                        <p>Analyzing 1000 survey datasets to find patterns behind social phenomena</p>
+                        
+                        <h3>🔧 Technical Implementation</h3>
+                        <ul>
+                            <li>Using SPSS for multivariate statistical analysis</li>
+                            <li>Building regression models to test hypotheses</li>
+                            <li>Handling missing values and outliers</li>
+                        </ul>
+                        
+                        <h3>💡 Gains and Growth</h3>
+                        <p>This was my first experience with the charm of data mining, finding meaningful patterns from messy data. This experience laid the foundation for my quantitative thinking and sparked my interest in financial data analysis.</p>
+                    `
+                },
+                'capm-project': {
+                    title: 'Hon Hai CAPM Model Analysis',
+                    content: `
+                        <h3>📊 Analysis Results</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0;">
+                            <div style="background: rgba(64, 224, 208, 0.1); padding: 1rem; border-radius: 8px;">
+                                <strong>Beta Coefficient</strong><br>
+                                <span style="font-size: 2rem; color: #40E0D0;">1.23</span>
+                            </div>
+                            <div style="background: rgba(64, 224, 208, 0.1); padding: 1rem; border-radius: 8px;">
+                                <strong>R-squared</strong><br>
+                                <span style="font-size: 2rem; color: #40E0D0;">0.67</span>
+                            </div>
+                        </div>
+                        
+                        <h3>🔧 Technical Challenges</h3>
+                        <ul>
+                            <li>Learning database operations to fetch Hon Hai stock data</li>
+                            <li>Manually calculating Beta coefficient to understand CAPM principles</li>
+                            <li>Validating differences between theory and actual market</li>
+                        </ul>
+                        
+                        <h3>💡 Key Findings</h3>
+                        <p>Hon Hai's Beta value of 1.23 indicates its stock volatility is higher than market average.</p>
+                    `
+                },
+                'options-pricing': {
+                    title: 'Implied Volatility Curve Analysis',
+                    content: `
+                        <h3>📈 Real Market Data Analysis</h3>
+                        <div style="background: rgba(64, 224, 208, 0.1); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                <div style="text-align: center;">
+                                    <strong>Monte Carlo Simulation</strong><br>
+                                    <span style="font-size: 2rem; color: #40E0D0;">374.2</span>
+                                </div>
+                                <div style="text-align: center;">
+                                    <strong>Black-Scholes</strong><br>
+                                    <span style="font-size: 2rem; color: #FF8C00;">340.2</span>
+                                </div>
+                            </div>
+                            <div style="margin-top: 1rem; padding: 0.5rem; background: rgba(255, 140, 0, 0.1); border-radius: 8px;">
+                                <strong>Market Price Comparison</strong>
+                                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; margin-top: 0.5rem; text-align: center;">
+                                    <div>
+                                        <small>Open</small><br>
+                                        <strong>259</strong>
+                                    </div>
+                                    <div>
+                                        <small>High</small><br>
+                                        <strong>336</strong>
+                                    </div>
+                                    <div>
+                                        <small>Low</small><br>
+                                        <strong>244</strong>
+                                    </div>
+                                    <div>
+                                        <small>Close</small><br>
+                                        <strong>333</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h3>🔧 Technical Implementation</h3>
+                        <ul>
+                            <li>Implementing Black-Scholes model with Excel VBA</li>
+                            <li>Drawing volatility smile curves</li>
+                            <li>Comparing theoretical vs market prices</li>
+                        </ul>
+                        
+                        <h3>💡 Important Findings</h3>
+                        <p>Significant differences exist between market prices and theoretical models, reflecting the impact of market sentiment and liquidity factors. This experience helped me understand the complexity of financial markets.</p>
+                    `
+                },
+                'first-failure': {
+                    title: 'First Quantitative Strategy Experience',
+                    content: `
+                        <h3>📉 Painful Lessons</h3>
+                        <p>Attempted to create simple quantitative trading strategies with Excel, results were dismal</p>
+                        <div style="background: rgba(255, 140, 0, 0.1); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                            <p><strong>25-Year Backtest Comparison:</strong></p>
+                            <ul>
+                                <li>Momentum Strategy: 2.04x (3.1% annualized)</li>
+                                <li>Mean Reversion: 7.51x (8.4% annualized)</li>
+                                <li>Buy & Hold: 23.931x (13.2% annualized)</li>
+                            </ul>
+                        </div>
+                        
+                        <h3>❓ Failure Analysis</h3>
+                        <ul>
+                            <li>Over-reliance on technical indicators, lacking statistical foundation</li>
+                            <li>No data analysis, failed to identify clear signals</li>
+                            <li>Model too simplistic, no stock-specific customization</li>
+                        </ul>
+                        
+                        <h3>💡 Valuable Reflection</h3>
+                        <p>I realized beating the market isn't as simple as imagined, there's much more to learn in quantitative trading.</p>
+                    `
+                },
+                'pairs-trading': {
+                    title: 'Statistical Arbitrage Strategy Breakthrough',
+                    content: `
+                        <h3>📄 Strategy Performance</h3>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin: 1rem 0;">
+                            <div style="background: rgba(64, 224, 208, 0.1); padding: 1rem; border-radius: 8px; text-align: center;">
+                                <strong>Annualized Return</strong><br>
+                                <span style="font-size: 2rem; color: #40E0D0;">53.28%</span>
+                            </div>
+                            <div style="background: rgba(64, 224, 208, 0.1); padding: 1rem; border-radius: 8px; text-align: center;">
+                                <strong>Sharpe Ratio</strong><br>
+                                <span style="font-size: 2rem; color: #40E0D0;">2.42</span>
+                            </div>
+                            <div style="background: rgba(64, 224, 208, 0.1); padding: 1rem; border-radius: 8px; text-align: center;">
+                                <strong>Max Drawdown</strong><br>
+                                <span style="font-size: 2rem; color: #40E0D0;">0.05%</span>
+                            </div>
+                            <div style="background: rgba(64, 224, 208, 0.1); padding: 1rem; border-radius: 8px; text-align: center;">
+                                <strong>Win Rate</strong><br>
+                                <span style="font-size: 2rem; color: #40E0D0;">97.6%</span>
+                            </div>
+                        </div>
+                        
+                        <h3>🔧 Technical Breakthrough</h3>
+                        <ul>
+                            <li>Learned API usage through AI, fetched 5-year data from Binance</li>
+                            <li>Self-taught Python programming, implemented cointegration tests</li>
+                            <li>Used Ornstein-Uhlenbeck process modeling</li>
+                            <li>Applied Bertram method for optimal trading thresholds</li>
+                        </ul>
+                        
+                        <h3>💡 Key Success Factors</h3>
+                        <p>Clear core logic of statistical arbitrage, applicable to multiple assets. This success validated the importance of systematic approaches.</p>
+                        
+                        <h3>⚠️ Challenges and Limitations</h3>
+                        <p>Only Python backtesting, couldn't test in real markets, unable to measure gap between theoretical calculations and actual trading.</p>
+                    `
+                },
+                'alpha-v1': {
+                    title: 'Alpha Automated Search Program',
+                    content: `
+                        <h3>❓ Challenges</h3>
+                        <p>Manual alpha simulation extremely inefficient, time-consuming with limited results</p>
+                        
+                        <h3>💡 Solution</h3>
+                        <p>Learning automation knowledge, attempting to build automated search templates</p>
+                        
+                        <h3>🤖 Code Demonstration</h3>
+                        <pre style="background: #1a1a1a; color: #40E0D0; padding: 1rem; border-radius: 8px; overflow-x: auto;">
+                            
+template = '''
+data1 = ts_backfill(&lt;funds_data&gt;, &lt;backfill_days&gt;);
+data2 = ts_backfill(&lt;debt_data&gt;, &lt;backfill_days&gt;);
+diff = &lt;diff_op&gt;(data1, data2);
+alpha = &lt;ts_neut_op&gt;(diff, &lt;ts_neut_days&gt;);
+'''
+
+for i in range(1000):
+    expr = template
+    for name, choices in space.items():
+        expr = expr.replace(name, np.random.choice(choices))
+    
+    success, alpha_res = simulate(expr, sess)
+    if success and alpha_res['is']['fitness'] > 1.0:
+        print(f"✅ Found high-quality Alpha: {alpha_res['id']}")
+</pre>
+                        
+                        <h3>💡 Innovation Points</h3>
+                        <ul>
+                            <li>Template design, parameterizing complex expressions</li>
+                            <li>Automated testing replacing manual attempts</li>
+                            <li>Freeing hands, significantly improving efficiency</li>
+                        </ul>
+                    `
+                },
+                'greedy-algo': {
+                    title: 'Greedy Search Algorithm',
+                    content: `
+                        <h3>❓ Problem Encountered</h3>
+                        <p>Completely random simulation approach produces extremely unstable results, heavily reliant on luck to find alphas</p>
+                        
+                        <h3>💡 Solution</h3>
+                        <p>Attempting to introduce greedy algorithms, hoping to improve efficiency</p>
+                        
+                        <h3>🧠 Algorithm Design</h3>
+                        <div style="background: rgba(64, 224, 208, 0.1); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                            <p><strong>Process:</strong> Random Exploration → Evaluate Results → Local Optimization → Re-randomize</p>
+                        </div>
+                        
+                        <h3>⚠️ New Challenges</h3>
+                        <ul>
+                            <li>High correlation among generated Alphas</li>
+                            <li>Easy to fall into local optimum traps, reducing efficiency and consuming excessive time</li>
+                            <li>Need to balance randomness and directionality</li>
+                        </ul>
+                    `
+                },
+                'rat-cleaning': {
+                    title: 'Rat Dropping Cleaning Algorithm',
+                    content: `
+                        <h3>💡 Core Concept</h3>
+                        <p>Hoping to achieve survival of the fittest during simulation, gradually improving search efficiency</p>
+                        
+                        <h3>🎯 Design Philosophy</h3>
+                        <p>Some parameter combinations are naturally prone to failure, like a rat dropping spoiling a pot of porridge. Through statistical analysis, identify these "rat droppings" and automatically remove them, making the search space increasingly pure.</p>
+                        
+                        <h3>🔧 Implementation Method</h3>
+                        <ul>
+                            <li>Record success rate of each parameter</li>
+                            <li>Statistics on high-failure-rate combinations</li>
+                            <li>Automatically remove high-failure-rate parameters</li>
+                            <li>Continuously optimize search space</li>
+                        </ul>
+                        
+                        <h3>📊 Expected Results</h3>
+                        <p>As statistical samples increase, search space gradually converges to high-success-rate areas, significantly improving Alpha discovery efficiency</p>
+                    `
+                },
+                'cloud-deploy': {
+                    title: 'Cloud Automated Deployment',
+                    content: `
+                        <h3>❓ Problems Encountered</h3>
+                        <p>Student equipment limitations and poor network environment prompted me to develop a stable cloud environment</p>
+                        
+                        <h3>☁️ System Architecture</h3>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1rem 0;">
+                            <div style="background: rgba(64, 224, 208, 0.1); padding: 1rem; border-radius: 8px; text-align: center;">
+                                <strong>Platform</strong><br>
+                                Google Cloud Platform
+                            </div>
+                            <div style="background: rgba(64, 224, 208, 0.1); padding: 1rem; border-radius: 8px; text-align: center;">
+                                <strong>Code Scale</strong><br>
+                                2000+ Lines
+                            </div>
+                            <div style="background: rgba(64, 224, 208, 0.1); padding: 1rem; border-radius: 8px; text-align: center;">
+                                <strong>Runtime</strong><br>
+                                24/7 Automated
+                            </div>
+                        </div>
+                        
+                        <h3>⚡ Technical Challenges</h3>
+                        <ul>
+                            <li>Environment configuration and dependency management</li>
+                            <li>Error handling and automatic retry mechanisms</li>
+                            <li>API request frequency control</li>
+                            <li>Cost optimization and resource management</li>
+                        </ul>
+                        
+                        <h3>🏆 Final Results</h3>
+                        <p>Successfully achieved 24-hour cloud automation, completely solving local environment limitations.</p>
+                    `
+                }
+            }
+        };
+
+// 更新showDetail函數以支持多語言
+function showDetail(type) {
+    const modal = document.getElementById('detailModal');
+    const modalContent = document.getElementById('modalContent');
+    
+    const detailsData = details[currentLang] || details['zh'];
+    
+    if (detailsData[type]) {
+        modalContent.innerHTML = `
+            <h2 style="color: #40E0D0; margin-bottom: 1.5rem;">${detailsData[type].title}</h2>
+            ${detailsData[type].content}
+        `;
+        modal.style.display = 'block';
+    }
+}
+        
+        // 關閉模態框
+        function closeModal() {
+            document.getElementById('detailModal').style.display = 'none';
+        }
+        
+        // 點擊模態框外部關閉
+        window.onclick = function(event) {
+            const modal = document.getElementById('detailModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+        
+        // 滾動效果
+        let lastScrollTop = 0;
+        window.addEventListener('scroll', () => {
+            handleBackToTopButton();
+            
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const nav = document.querySelector('.skill-tree-nav');
+            
+            if (scrollTop > lastScrollTop && scrollTop > 100) {
+                nav.style.transform = 'translateY(-100%)';
+            } else {
+                nav.style.transform = 'translateY(0)';
+            }
+            
+            lastScrollTop = scrollTop;
+        });
+        
+        // 平滑滾動
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // 動態載入效果
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.timeline-item, .flow-node, .result-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'all 0.6s ease';
+            observer.observe(el);
+        });
+
+        // 語言切換函數
+        function toggleLanguage() {
+            currentLang = currentLang === 'zh' ? 'en' : 'zh';
+            updateLanguage();
+            updateImagePaths();
+            localStorage.setItem('preferredLang', currentLang);
+        }
+        
+        // 更新頁面文字
+        function updateLanguage() {
+            const elements = document.querySelectorAll('[data-lang-key]');
+            
+            elements.forEach(element => {
+                const key = element.getAttribute('data-lang-key');
+                
+                if (translations[currentLang] && translations[currentLang][key]) {
+                    element.textContent = translations[currentLang][key];
+                }
+            });
+            
+            // 更新HTML lang屬性
+            document.documentElement.lang = currentLang === 'zh' ? 'zh-TW' : 'en';
+        }
+        
+        // 更新圖片路徑
+        function updateImagePaths() {
+            const image = document.querySelectorAll('img');
+            
+            image.forEach(img => {
+                let src = img.src;
+                
+                if (src.includes('/image/') || src.includes('/image/')) {
+                    const url = new URL(src);
+                    let pathname = url.pathname;
+                    
+                    // 移除之前的語言路徑
+                    pathname = pathname.replace(/\/image\/(zh|en)\//g, '/image/');
+                    pathname = pathname.replace(/\/image\//g, '/image/');
+                    
+                    // 根據當前語言設定新路徑
+                    if (currentLang === 'zh') {
+                        // 中文：使用原始 /image/ 路徑
+                        pathname = pathname.replace('/image/', '/image/');
+                    } else {
+                        // 英文：改為 /image/en/ 路徑
+                        pathname = pathname.replace('/image/', '/image/en/');
+                    }
+                    
+                    img.src = pathname;
+                    
+                    img.onerror = function() {
+                        console.warn(`圖片載入失敗: ${this.src}`);
+                    };
+                }
+            });
+        }
+        
+        // 頁面載入時檢查語言偏好
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('preferredLang');
+            if (savedLang && (savedLang === 'zh' || savedLang === 'en')) {
+                currentLang = savedLang;
+                updateLanguage();
+                updateImagePaths();
+            }
+            handleBackToTopButton();
+            highlightSkills('all');
+        });
+        
+    </script>
+</body>
+</html>                    
+            
+            
+    
+    
+                
+                
+                
+
